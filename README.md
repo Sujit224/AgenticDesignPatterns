@@ -2,7 +2,6 @@
 
 An interactive, visually rich, and responsive educational web application designed to guide developers and AI architects in choosing the right architecture for their AI systems—avoiding both under-engineering (Underkill) and over-engineering (Overkill).
 
-🔗 **Live Repository:** [github.com/Sujit224/AgenticDesignPatterns](https://github.com/Sujit224/AgenticDesignPatterns)
 
  **Reference Blog:** [Choosing the Right Agentic Design Pattern: A Decision Tree Approach](https://machinelearningmastery.com/choosing-the-right-agentic-design-pattern-a-decision-tree-approach/)
 
