@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic Design Patterns</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0A0F1E;
+  --navy-mid: #111827;
+  --navy-light: #1E2A3A;
+  --cyan: #00D4FF;
+  --cyan-dim: rgba(0,212,255,0.15);
+  --violet: #7C3AED;
+  --violet-dim: rgba(124,58,237,0.15);
+  --amber: #F59E0B;
+  --amber-dim: rgba(245,158,11,0.15);
+  --red: #EF4444;
+  --green: #10B981;
+  --white: #F0F4FF;
+  --muted: #8899AA;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* ─── NAV ─────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,15,30,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0,212,255,0.12);
+  padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-weight: 700; font-size: 1.1rem;
+  background: linear-gradient(135deg, var(--cyan), var(--violet));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex; gap: 0.25rem; list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-display); font-size: 0.82rem; font-weight: 500;
+  color: var(--muted); text-decoration: none;
+  padding: 0.45rem 0.9rem; border-radius: 8px;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+.nav-links a:hover, .nav-links a.active {
+  color: var(--cyan);
+  background: var(--cyan-dim);
+  border-color: rgba(0,212,255,0.25);
+}
+
+/* ─── HERO ─────────────────────────────────────────── */
+#home {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; position: relative;
+  padding: 6rem 2rem 4rem;
+  overflow: hidden;
+}
+
+#canvas-bg {
+  position: absolute; inset: 0; opacity: 0.4;
+}
+
+.hero-badge {
+  font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500;
+  color: var(--cyan); letter-spacing: 0.15em; text-transform: uppercase;
+  background: var(--cyan-dim); border: 1px solid rgba(0,212,255,0.3);
+  padding: 0.4rem 1rem; border-radius: 100px;
+  margin-bottom: 2rem; display: inline-block;
+  animation: fadeUp 0.8s ease both;
+}
+
+.hero-title {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  line-height: 1.05; letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.9s 0.1s ease both;
+}
+
+.hero-title span {
+  background: linear-gradient(135deg, var(--cyan) 0%, var(--violet) 60%, var(--amber) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.hero-sub {
+  font-size: 1.15rem; color: var(--muted); max-width: 560px;
+  line-height: 1.7; margin-bottom: 3rem;
+  animation: fadeUp 1s 0.2s ease both;
+}
+
+.hero-cta {
+  display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+  animation: fadeUp 1s 0.3s ease both;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--cyan), var(--violet));
+  color: var(--navy); font-family: var(--font-display); font-weight: 700;
+  font-size: 0.9rem; padding: 0.8rem 2rem; border-radius: 12px;
+  border: none; cursor: pointer; text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: inline-block;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,212,255,0.35); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--white); font-family: var(--font-display); font-weight: 600;
+  font-size: 0.9rem; padding: 0.8rem 2rem; border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.2); cursor: pointer; text-decoration: none;
+  transition: all 0.2s; display: inline-block;
+}
+.btn-outline:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); }
+
+.hero-stats {
+  display: flex; gap: 3rem; margin-top: 5rem; flex-wrap: wrap; justify-content: center;
+  animation: fadeUp 1s 0.45s ease both;
+}
+.stat { text-align: center; }
+.stat-num { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--cyan); }
+.stat-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.2rem; }
+
+/* ─── SECTION BASE ─────────────────────────────────── */
+.section {
+  padding: 6rem 2rem;
+  max-width: 1200px; margin: 0 auto;
+}
+
+.section-full {
+  padding: 6rem 2rem;
+  position: relative;
+}
+
+.section-eyebrow {
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500;
+  color: var(--cyan); letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+
+.section-title {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  line-height: 1.15; margin-bottom: 1rem;
+}
+
+.section-desc {
+  color: var(--muted); font-size: 1.05rem; line-height: 1.7;
+  max-width: 640px; margin-bottom: 3rem;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin: 0;
+}
+
+/* ─── ECOMMERCE SCENARIO ─────────────────────────────── */
+#ecommerce { background: linear-gradient(180deg, var(--navy) 0%, #0D1525 100%); }
+
+.scenario-card {
+  background: var(--navy-light);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 20px; padding: 2rem;
+  margin-bottom: 2rem;
+  position: relative; overflow: hidden;
+}
+.scenario-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+}
+
+.scenario-header {
+  display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
+}
+
+.scenario-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; flex-shrink: 0;
+}
+
+.chat-bubble {
+  background: var(--navy-mid);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px; padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem; position: relative;
+  font-size: 0.95rem; line-height: 1.6;
+}
+.chat-bubble.user { border-left: 3px solid var(--cyan); }
+.chat-bubble.ai { border-left: 3px solid var(--violet); }
+.chat-label {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--muted); margin-bottom: 0.4rem;
+}
+
+/* Arch cards grid */
+.arch-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem; margin-top: 2rem;
+}
+
+.arch-card {
+  border-radius: 20px; padding: 1.75rem;
+  position: relative; overflow: hidden;
+  border: 1px solid;
+  transition: transform 0.3s;
+}
+.arch-card:hover { transform: translateY(-4px); }
+
+.arch-card.underkill {
+  background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(239,68,68,0.02));
+  border-color: rgba(239,68,68,0.25);
+}
+.arch-card.overkill {
+  background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(245,158,11,0.02));
+  border-color: rgba(245,158,11,0.25);
+}
+.arch-card.optimal {
+  background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(16,185,129,0.02));
+  border-color: rgba(16,185,129,0.25);
+}
+
+/* Neutral Initial State Override */
+.arch-card.neutral {
+  background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+.arch-card.neutral .arch-badge {
+  display: none;
+}
+.arch-card.neutral .teaching-line {
+  display: none;
+}
+.arch-card.neutral .red-highlight,
+.arch-card.neutral .green-highlight {
+  color: var(--muted) !important;
+}
+.arch-card.neutral .problem-list li::before {
+  content: '•' !important;
+  color: var(--muted) !important;
+}
+.arch-card.neutral .flow-node.bad,
+.arch-card.neutral .flow-node.agent,
+.arch-card.neutral .flow-node.output {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: var(--muted) !important;
+}
+
+.arch-badge {
+  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  padding: 0.3rem 0.75rem; border-radius: 100px;
+  display: inline-block; margin-bottom: 1rem;
+}
+.arch-badge.red { background: rgba(239,68,68,0.15); color: #EF4444; }
+.arch-badge.amber { background: rgba(245,158,11,0.15); color: var(--amber); }
+.arch-badge.green { background: rgba(16,185,129,0.15); color: var(--green); }
+
+.arch-title {
+  font-family: var(--font-display); font-size: 1.35rem; font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+/* Flow diagram */
+.flow-diagram {
+  background: var(--navy-mid); border-radius: 16px;
+  padding: 1.5rem; margin: 1.5rem 0;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.flow-row {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+.flow-row:last-child { margin-bottom: 0; }
+
+.flow-node {
+  font-family: var(--font-mono); font-size: 0.78rem;
+  padding: 0.4rem 0.9rem; border-radius: 8px;
+  border: 1px solid;
+}
+.flow-node.customer { background: rgba(0,212,255,0.1); border-color: rgba(0,212,255,0.3); color: var(--cyan); }
+.flow-node.process { background: rgba(124,58,237,0.1); border-color: rgba(124,58,237,0.3); color: #A78BFA; }
+.flow-node.tool { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.3); color: var(--green); }
+.flow-node.output { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.3); color: var(--amber); }
+.flow-node.bad { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); color: #EF4444; }
+.flow-node.agent { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.3); color: var(--amber); }
+
+.flow-arrow {
+  color: var(--muted); font-size: 1rem; flex-shrink: 0;
+}
+.flow-arrow.down { display: block; text-align: center; margin: 0.2rem 0; color: var(--muted); }
+
+.problem-list { list-style: none; margin-top: 1rem; }
+.problem-list li {
+  display: flex; align-items: flex-start; gap: 0.6rem;
+  font-size: 0.88rem; color: var(--muted); margin-bottom: 0.5rem; line-height: 1.5;
+}
+.problem-list li::before { content: '✗'; color: #EF4444; flex-shrink: 0; font-weight: 700; margin-top: 0.05rem; }
+.problem-list.good li::before { content: '✓'; color: var(--green); }
+
+.teaching-line {
+  margin-top: 1.25rem; padding: 0.85rem 1.1rem;
+  border-radius: 10px; font-size: 0.88rem; font-style: italic;
+  line-height: 1.6;
+}
+.teaching-line.red { background: rgba(239,68,68,0.08); border-left: 3px solid #EF4444; }
+.teaching-line.amber { background: rgba(245,158,11,0.08); border-left: 3px solid var(--amber); }
+.teaching-line.green { background: rgba(16,185,129,0.08); border-left: 3px solid var(--green); }
+
+/* Interactive Q */
+.interactive-q {
+  background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(0,212,255,0.08));
+  border: 1px solid rgba(124,58,237,0.3);
+  border-radius: 20px; padding: 2.5rem;
+  margin-top: 3rem; text-align: center;
+}
+.interactive-q h3 { font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 1.5rem; }
+.q-step {
+  display: flex; flex-direction: column; align-items: center;
+  margin-bottom: 1.5rem; opacity: 0;
+  transition: opacity 0.5s, transform 0.5s;
+  transform: translateY(10px);
+}
+.q-step.visible { opacity: 1; transform: none; }
+.q-text {
+  font-size: 1.05rem; margin-bottom: 0.85rem; color: var(--white);
+}
+.q-buttons { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
+.q-btn {
+  padding: 0.55rem 1.2rem; border-radius: 10px;
+  background: var(--navy-mid); border: 1px solid rgba(255,255,255,0.12);
+  color: var(--white); cursor: pointer; font-family: var(--font-body); font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.q-btn:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); }
+.q-btn.answered { background: var(--cyan-dim); border-color: var(--cyan); color: var(--cyan); pointer-events: none; }
+.q-connector { color: var(--muted); margin: 0.3rem 0; font-size: 1.2rem; }
+
+/* ─── PATTERNS ─────────────────────────────────────── */
+#patterns { background: var(--navy-mid); }
+
+.patterns-nav {
+  display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 3rem;
+}
+.pat-tab {
+  font-family: var(--font-display); font-size: 0.82rem; font-weight: 600;
+  padding: 0.55rem 1.1rem; border-radius: 10px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.12); color: var(--muted);
+  background: transparent; transition: all 0.2s;
+}
+.pat-tab:hover { color: var(--white); border-color: rgba(255,255,255,0.3); }
+.pat-tab.active {
+  background: linear-gradient(135deg, var(--cyan), var(--violet));
+  color: var(--navy); border-color: transparent; font-weight: 700;
+}
+
+.pattern-panel { display: none; }
+.pattern-panel.active { display: block; animation: fadeUp 0.4s ease; }
+
+.pattern-layout {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+  align-items: start;
+}
+@media(max-width: 780px) { .pattern-layout { grid-template-columns: 1fr; } }
+
+.pattern-info h2 {
+  font-family: var(--font-display); font-size: 2rem; font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.pattern-info .tagline {
+  font-family: var(--font-mono); font-size: 0.78rem; color: var(--cyan);
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1rem;
+}
+.pattern-info p { color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem; }
+
+.use-when {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;
+}
+.use-box { background: var(--navy-light); border-radius: 14px; padding: 1.1rem; border: 1px solid rgba(255,255,255,0.06); }
+.use-box h4 { font-family: var(--font-display); font-size: 0.82rem; font-weight: 700; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.use-box h4.yes { color: var(--green); }
+.use-box h4.no { color: var(--red); }
+.use-box ul { list-style: none; }
+.use-box ul li { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.35rem; line-height: 1.4; }
+.use-box ul li::before { content: ''; margin-right: 0.4rem; }
+.use-box.yes-box ul li::before { content: '✓ '; color: var(--green); }
+.use-box.no-box ul li::before { content: '✗ '; color: var(--red); }
+
+/* Pattern visual area */
+.pattern-visual {
+  background: var(--navy-light); border-radius: 20px; padding: 1.75rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  position: relative; min-height: 360px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+
+.anim-flow {
+  width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0;
+}
+
+.anim-node {
+  padding: 0.6rem 1.4rem; border-radius: 10px;
+  font-family: var(--font-mono); font-size: 0.78rem; font-weight: 500;
+  text-align: center; min-width: 180px;
+  opacity: 0; transform: translateY(-8px);
+  transition: opacity 0.35s, transform 0.35s, box-shadow 0.3s;
+  position: relative; z-index: 1;
+}
+.anim-node.show { opacity: 1; transform: none; }
+.anim-node.glow { box-shadow: 0 0 20px rgba(0,212,255,0.4); }
+
+.anim-node.n-input { background: rgba(0,212,255,0.12); border: 1.5px solid var(--cyan); color: var(--cyan); }
+.anim-node.n-think { background: rgba(124,58,237,0.12); border: 1.5px solid var(--violet); color: #A78BFA; }
+.anim-node.n-act { background: rgba(16,185,129,0.12); border: 1.5px solid var(--green); color: var(--green); }
+.anim-node.n-obs { background: rgba(245,158,11,0.12); border: 1.5px solid var(--amber); color: var(--amber); }
+.anim-node.n-out { background: rgba(240,244,255,0.08); border: 1.5px solid rgba(240,244,255,0.3); color: var(--white); }
+.anim-node.n-tool { background: rgba(16,185,129,0.12); border: 1px dashed var(--green); color: var(--green); font-size: 0.72rem; min-width: 140px; }
+
+.anim-arrow {
+  width: 2px; height: 24px; background: rgba(255,255,255,0.15);
+  position: relative; opacity: 0;
+  transition: opacity 0.3s 0.1s;
+}
+.anim-arrow.show { opacity: 1; }
+.anim-arrow::after {
+  content: '▼'; position: absolute; bottom: -4px; left: 50%;
+  transform: translateX(-50%); font-size: 0.6rem; color: rgba(255,255,255,0.3);
+  line-height: 1;
+}
+
+.anim-tools-row {
+  display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center;
+  margin: 0.5rem 0;
+}
+
+.run-btn {
+  margin-top: 1.25rem; padding: 0.5rem 1.4rem; border-radius: 8px;
+  background: var(--cyan-dim); border: 1px solid rgba(0,212,255,0.3);
+  color: var(--cyan); font-family: var(--font-mono); font-size: 0.75rem;
+  cursor: pointer; transition: all 0.2s;
+}
+.run-btn:hover { background: rgba(0,212,255,0.25); }
+
+/* Comparison table */
+.compare-table {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  margin-top: 3rem; font-size: 0.88rem;
+}
+.compare-table th {
+  background: var(--navy-light); padding: 0.85rem 1.1rem;
+  text-align: left; font-family: var(--font-display); font-size: 0.8rem;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.compare-table th:first-child { border-radius: 12px 0 0 0; }
+.compare-table th:last-child { border-radius: 0 12px 0 0; }
+.compare-table td {
+  padding: 0.85rem 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--muted); vertical-align: top;
+}
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:last-child td:first-child { border-radius: 0 0 0 12px; }
+.compare-table tr:last-child td:last-child { border-radius: 0 0 12px 0; }
+.compare-table td:first-child { color: var(--white); font-weight: 600; font-family: var(--font-display); }
+.compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* ─── DECISION TREE ─────────────────────────────────── */
+#decision { background: var(--navy); }
+
+.tree-container {
+  background: var(--navy-light); border-radius: 24px;
+  border: 1px solid rgba(0,212,255,0.12);
+  padding: 2rem; overflow: auto;
+  position: relative;
+}
+
+#tree-svg {
+  display: block;
+  max-width: 100%; margin: 0 auto;
+}
+
+.tree-legend {
+  display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.5rem;
+  justify-content: center;
+}
+.legend-item {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 0.8rem; color: var(--muted);
+}
+.legend-dot {
+  width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
+}
+
+/* Tree simulation */
+.tree-sim {
+  background: var(--navy-mid); border-radius: 16px; padding: 1.5rem;
+  margin-top: 2rem; border: 1px solid rgba(255,255,255,0.06);
+}
+.tree-sim h3 { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 1.25rem; }
+
+.sim-question {
+  background: var(--navy-light); border-radius: 12px; padding: 1.1rem 1.25rem;
+  margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.06);
+}
+.sim-q-text { font-size: 0.95rem; margin-bottom: 0.75rem; }
+.sim-choices { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.sim-choice {
+  padding: 0.45rem 1rem; border-radius: 8px; cursor: pointer;
+  background: var(--navy); border: 1px solid rgba(255,255,255,0.12);
+  color: var(--muted); font-size: 0.85rem; transition: all 0.2s;
+}
+.sim-choice:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); }
+.sim-choice.selected { background: var(--violet-dim); border-color: var(--violet); color: #A78BFA; }
+
+.sim-result {
+  background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.3);
+  border-radius: 12px; padding: 1.1rem 1.25rem; display: none;
+}
+.sim-result.show { display: block; animation: fadeUp 0.4s ease; }
+.sim-result h4 { font-family: var(--font-display); color: var(--green); margin-bottom: 0.4rem; }
+.sim-result p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+.sim-reset {
+  margin-top: 0.75rem; padding: 0.4rem 1rem; border-radius: 8px;
+  background: transparent; border: 1px solid rgba(255,255,255,0.12);
+  color: var(--muted); font-size: 0.82rem; cursor: pointer; transition: all 0.2s;
+}
+.sim-reset:hover { border-color: var(--white); color: var(--white); }
+
+/* ─── ANIMATIONS ─────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0px rgba(0,212,255,0); }
+  50% { box-shadow: 0 0 24px rgba(0,212,255,0.4); }
+}
+
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ─── FOOTER ─────────────────────────────────────────── */
+footer {
+  text-align: center; padding: 2.5rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  color: var(--muted); font-size: 0.82rem;
+}
+/* ─── MOBILE ─────────────────────────────────────────── */
+@media(max-width: 640px) {
+  nav { padding: 0 1rem; }
+  .nav-links a { font-size: 0.7rem; padding: 0.35rem 0.6rem; }
+  .arch-grid { grid-template-columns: 1fr; }
+  .use-when { grid-template-columns: 1fr; }
+}
+
+/* ─── TAB CONTENT SHOW/HIDE ───────────────────────── */
+.tab-content {
+  display: none;
+}
+.tab-content.active-tab {
+  display: block;
+}
+
+/* ─── APPROACH SELECTOR ───────────────────────────── */
+.approach-selector {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.approach-tab-btn {
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.7rem 1.4rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.02);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.approach-tab-btn:hover {
+  color: var(--white);
+  border-color: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.04);
+}
+.approach-tab-btn.active {
+  background: var(--cyan-dim);
+  border-color: rgba(0, 212, 255, 0.3);
+  color: var(--cyan);
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.15);
+}
+.arch-panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+  justify-content: center;
+}
+.arch-panel {
+  display: none;
+}
+.arch-panel.active {
+  display: block;
+  animation: fadeUp 0.45s ease both;
+}
+
+/* ─── SESSION AGENDA ──────────────────────────────── */
+.agenda-container {
+  margin-top: 3.5rem;
+  max-width: 900px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  animation: fadeUp 1s 0.35s ease both;
+}
+.agenda-title {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+.agenda-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+@media(max-width: 768px) {
+  .agenda-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.agenda-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 1.25rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.agenda-card:hover {
+  transform: translateY(-4px);
+  background: rgba(0, 212, 255, 0.04);
+  border-color: rgba(0, 212, 255, 0.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+.agenda-num {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+.agenda-card-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.5rem;
+}
+.agenda-card-desc {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+.agenda-link {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cyan);
+  transition: color 0.2s;
+  margin-top: auto;
+}
+.agenda-card:hover .agenda-link {
+  color: var(--white);
+}
+
+/* ─── TIMELINE AGENDA ─────────────────────────────── */
+.timeline-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.timeline-container::before {
+  content: '';
+  position: absolute;
+  left: 28px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--cyan), var(--violet), var(--amber));
+  opacity: 0.3;
+}
+.timeline-item {
+  display: flex;
+  gap: 1.5rem;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+.timeline-num {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--navy-light);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  z-index: 2;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+.timeline-content {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 1.5rem;
+  flex-grow: 1;
+  transition: all 0.3s ease;
+}
+.timeline-content h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
+}
+.timeline-content p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.timeline-action {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--cyan);
+  transition: color 0.3s ease;
+}
+.timeline-item:hover .timeline-num {
+  border-color: var(--cyan);
+  background: var(--cyan-dim);
+  color: var(--white);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+  transform: scale(1.05);
+}
+.timeline-item:hover .timeline-content {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(0, 212, 255, 0.25);
+  transform: translateX(8px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+.timeline-item:hover .timeline-content h3 {
+  color: var(--cyan);
+}
+.timeline-item:hover .timeline-action {
+  color: var(--white);
+}
+@media(max-width: 640px) {
+  .timeline-container::before {
+    left: 20px;
+  }
+  .timeline-num {
+    width: 42px;
+    height: 42px;
+    font-size: 0.9rem;
+  }
+  .timeline-content {
+    padding: 1rem;
+  }
+  .timeline-content h3 {
+    font-size: 1.05rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="switchTab('home')">⬡ AgenticDP</div>
+  <ul class="nav-links">
+    <li><a href="#" id="nav-home" class="active" onclick="switchTab('home'); return false;">Home</a></li>
+    <li><a href="#" id="nav-agenda" onclick="switchTab('agenda'); return false;">Agenda</a></li>
+    <li><a href="#" id="nav-why" onclick="switchTab('why'); return false;">1. Why Agentic Patterns</a></li>
+    <li><a href="#" id="nav-patterns" onclick="switchTab('patterns'); return false;">2. Design Patterns</a></li>
+    <li><a href="#" id="nav-decision" onclick="switchTab('decision'); return false;">3. Decision Tree</a></li>
+  </ul>
+</nav>
+
+<!-- TAB: HOME -->
+<div id="tab-home" class="tab-content active-tab">
+  <!-- ─── HERO ─────────────────────────────────────────── -->
+  <section id="home">
+  <canvas id="canvas-bg"></canvas>
+  <div style="position:relative;z-index:1">
+    <div class="hero-badge">Session Guide · Agentic AI</div>
+    <h1 class="hero-title">
+      Agentic<br><span>Design Patterns</span>
+    </h1>
+    <p class="hero-sub">
+      Choosing the right architecture for your AI agent — from sequential chains to multi-agent systems — so every decision is deliberate, not accidental.
+    </p>
+    <div class="hero-cta">
+      <a href="#" onclick="switchTab('agenda'); return false;" class="btn-primary">View Agenda →</a>
+      <a href="#" onclick="switchTab('why'); return false;" class="btn-outline">Start with the Example</a>
+      <a href="#" onclick="switchTab('patterns'); return false;" class="btn-outline">Explore Patterns</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Design Patterns</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Architecture Tiers</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">1</div>
+        <div class="stat-label">Decision Framework</div>
+      </div>
+    </div>
+
+    <!-- Session Agenda / Divided into 3 Parts -->
+    <div class="agenda-container">
+      <h3 class="agenda-title">Session Structure</h3>
+      <div class="agenda-grid">
+        <div class="agenda-card" onclick="switchTab('why')">
+          <div class="agenda-num">Part 1</div>
+          <h4 class="agenda-card-title">Why Agentic Design Patterns (Ecom Example)</h4>
+          <p class="agenda-card-desc">An entry-level support query walkthrough comparing Underkill, Overkill, and Optimal tool use architectures.</p>
+          <span class="agenda-link">Learn Why →</span>
+        </div>
+        <div class="agenda-card" onclick="switchTab('patterns')">
+          <div class="agenda-num">Part 2</div>
+          <h4 class="agenda-card-title">Design Patterns</h4>
+          <p class="agenda-card-desc">Deep-dive analysis of the 5 core agent design patterns: Sequential, ReAct, Planning, Reflection, and Multi-Agent.</p>
+          <span class="agenda-link">Explore Patterns →</span>
+        </div>
+        <div class="agenda-card" onclick="switchTab('decision')">
+          <div class="agenda-num">Part 3</div>
+          <h4 class="agenda-card-title">Decision Tree</h4>
+          <p class="agenda-card-desc">Interactive selector and decision framework to choose the simplest pattern that fits your requirements.</p>
+          <span class="agenda-link">Test Framework →</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</div> <!-- END tab-home -->
+
+<!-- TAB: AGENDA -->
+<div id="tab-agenda" class="tab-content">
+  <section id="agenda" class="section" style="min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 6rem 2rem;">
+    <div class="reveal" style="max-width: 800px; width: 100%;">
+      <div class="section-eyebrow" style="text-align: center;">Overview</div>
+      <h2 class="section-title" style="text-align: center; margin-bottom: 3rem;">Session Agenda</h2>
+      
+      <div class="timeline-container">
+        <!-- Item 1 -->
+        <div class="timeline-item" onclick="switchTab('home')">
+          <div class="timeline-num">01</div>
+          <div class="timeline-content">
+            <h3>Introduction to Agent Design Patterns</h3>
+            <p>Understand the foundational concepts, definitions, and paradigm shift from basic prompts to autonomous agents acting in environments.</p>
+            <span class="timeline-action">Go to Home →</span>
+          </div>
+        </div>
+        
+        <!-- Item 2 -->
+        <div class="timeline-item" onclick="switchTab('why')">
+          <div class="timeline-num">02</div>
+          <div class="timeline-content">
+            <h3>Analyzing the need of right AI design patterns through an example</h3>
+            <p>An entry-level e-commerce support scenario comparing Underkill (raw LLM), Overkill (8 specialized agents), and Optimal architectures.</p>
+            <span class="timeline-action">Explore Example →</span>
+          </div>
+        </div>
+        
+        <!-- Item 3 -->
+        <div class="timeline-item" onclick="switchTab('patterns')">
+          <div class="timeline-num">03</div>
+          <div class="timeline-content">
+            <h3>Some popular AI Patterns</h3>
+            <p>Deep dive into the five core agent design patterns: Sequential Chains, ReAct, Planning, Reflection, and Multi-Agent systems.</p>
+            <span class="timeline-action">View Patterns →</span>
+          </div>
+        </div>
+        
+        <!-- Item 4 -->
+        <div class="timeline-item" onclick="switchTab('decision')">
+          <div class="timeline-num">04</div>
+          <div class="timeline-content">
+            <h3>Choosing the right AI Design pattern (Decision Tree Based Approach)</h3>
+            <p>A systematic decision framework and interactive simulator to guide you to the simplest, most effective pattern for any AI task.</p>
+            <span class="timeline-action">Try Decision Tree →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- TAB 1: WHY AGENTIC DESIGN PATTERNS -->
+<div id="tab-why" class="tab-content">
+  <!-- ─── ECOMMERCE SECTION ─────────────────────────────── -->
+  <section id="ecommerce" style="background: linear-gradient(180deg, var(--navy) 0%, #0D1525 100%); padding: 6rem 2rem;">
+<div class="section" style="padding:0; max-width:1100px; margin:0 auto;">
+
+  <div class="reveal">
+    <div class="section-eyebrow">Real-world walkthrough</div>
+    <h2 class="section-title">The E-Commerce Support Agent</h2>
+    <p class="section-desc">One scenario. Three architectures. Only one actually works. Let's find out why — step by step.</p>
+  </div>
+
+  <!-- Scenario Card -->
+  <div class="scenario-card reveal">
+    <div class="scenario-header">
+      <div class="scenario-icon" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.25);">🛒</div>
+      <div>
+        <div class="section-eyebrow" style="margin:0">The Scenario</div>
+        <div style="font-family:var(--font-display); font-weight:700; font-size:1.1rem; margin-top:0.2rem">A customer contacts AI support</div>
+      </div>
+    </div>
+    <div class="chat-bubble user">
+      <div class="chat-label">Customer</div>
+      "Where is my order? Can I return it if it arrives late?"
+    </div>
+    <div style="color:var(--muted); font-size:0.9rem; margin-bottom:1rem; padding: 0 0.25rem">The AI assistant must:</div>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:0.75rem;">
+      <div style="background:var(--navy-mid); border-radius:10px; padding:0.75rem 1rem; border:1px solid rgba(255,255,255,0.06); font-size:0.84rem; color:var(--muted);">
+        <span style="color:var(--cyan); font-weight:700; margin-right:0.4rem">①</span> Understand the issue
+      </div>
+      <div style="background:var(--navy-mid); border-radius:10px; padding:0.75rem 1rem; border:1px solid rgba(255,255,255,0.06); font-size:0.84rem; color:var(--muted);">
+        <span style="color:var(--cyan); font-weight:700; margin-right:0.4rem">②</span> Check order status
+      </div>
+      <div style="background:var(--navy-mid); border-radius:10px; padding:0.75rem 1rem; border:1px solid rgba(255,255,255,0.06); font-size:0.84rem; color:var(--muted);">
+        <span style="color:var(--cyan); font-weight:700; margin-right:0.4rem">③</span> Check delivery estimate
+      </div>
+      <div style="background:var(--navy-mid); border-radius:10px; padding:0.75rem 1rem; border:1px solid rgba(255,255,255,0.06); font-size:0.84rem; color:var(--muted);">
+        <span style="color:var(--cyan); font-weight:700; margin-right:0.4rem">④</span> Check return policy
+      </div>
+      <div style="background:var(--navy-mid); border-radius:10px; padding:0.75rem 1rem; border:1px solid rgba(255,255,255,0.06); font-size:0.84rem; color:var(--muted);">
+        <span style="color:var(--cyan); font-weight:700; margin-right:0.4rem">⑤</span> Give a clear answer
+      </div>
+    </div>
+  </div>
+
+  <!-- Approach Selector Buttons -->
+  <div class="approach-selector reveal">
+    <button class="approach-tab-btn" id="btn-approach-1" onclick="selectApproach(1)">Approach 1</button>
+    <button class="approach-tab-btn" id="btn-approach-2" onclick="selectApproach(2)">Approach 2</button>
+    <button class="approach-tab-btn" id="btn-approach-3" onclick="selectApproach(3)">Approach 3</button>
+  </div>
+
+  <!-- Three architectures -->
+  <div class="arch-panels reveal">
+
+    <!-- Underkill -->
+    <div class="arch-card underkill neutral arch-panel" id="panel-1">
+      <div class="arch-badge red">⚠ Underkill</div>
+      <div class="arch-title" id="arch-title-1">Approach 1</div>
+      <div style="color:var(--muted); font-size:0.88rem; margin-bottom:1rem; line-height:1.6">Raw LLM, no tools, no data access. Just vibes.</div>
+
+      <div class="flow-diagram">
+        <div class="flow-row">
+          <div class="flow-node customer">Customer Query</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node process">LLM</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node bad">Guess 🎲</div>
+        </div>
+      </div>
+
+      <div class="chat-bubble ai" style="margin-top:1rem">
+        <div class="chat-label">AI Output</div>
+        <span class="red-highlight">"Your order is <em>likely</em> on the way. If it is late, you can <em>probably</em> return it."</span>
+      </div>
+
+      <ul class="problem-list">
+        <li>No real order lookup — cannot know status</li>
+        <li>No policy access — may give wrong return rules</li>
+        <li>High hallucination risk — invents dates</li>
+        <li>Customer trust destroyed by vagueness</li>
+      </ul>
+      <div class="teaching-line red">
+        "This is underkill — the task depends on external company data, but the AI has no tools."
+      </div>
+    </div>
+
+    <!-- Overkill -->
+    <div class="arch-card overkill neutral arch-panel" id="panel-2">
+      <div class="arch-badge amber">🚀 Overkill</div>
+      <div class="arch-title" id="arch-title-2">Approach 2</div>
+      <div style="color:var(--muted); font-size:0.88rem; margin-bottom:1rem; line-height:1.6">Eight specialized agents for one simple question.</div>
+
+      <div class="flow-diagram">
+        <div class="flow-row"><div class="flow-node customer">Customer Query</div><div class="flow-arrow">→</div><div class="flow-node agent">Coordinator</div></div>
+        <div class="flow-arrow down">↓</div>
+        <div style="display:flex; gap:0.4rem; flex-wrap:wrap; justify-content:center; margin:0.3rem 0">
+          <div class="flow-node agent" style="font-size:0.68rem; min-width:0; padding:0.3rem 0.6rem;">Intent</div>
+          <div class="flow-node agent" style="font-size:0.68rem; min-width:0; padding:0.3rem 0.6rem;">Order</div>
+          <div class="flow-node agent" style="font-size:0.68rem; min-width:0; padding:0.3rem 0.6rem;">Logistics</div>
+          <div class="flow-node agent" style="font-size:0.68rem; min-width:0; padding:0.3rem 0.6rem;">Policy</div>
+          <div class="flow-node agent" style="font-size:0.68rem; min-width:0; padding:0.3rem 0.6rem;">Refund</div>
+          <div class="flow-node agent" style="font-size:0.68rem; min-width:0; padding:0.3rem 0.6rem;">Tone</div>
+          <div class="flow-node agent" style="font-size:0.68rem; min-width:0; padding:0.3rem 0.6rem;">Compliance</div>
+          <div class="flow-node agent" style="font-size:0.68rem; min-width:0; padding:0.3rem 0.6rem;">Response</div>
+        </div>
+        <div class="flow-arrow down">↓</div>
+        <div class="flow-row" style="justify-content:center"><div class="flow-node output">Final Response</div></div>
+      </div>
+
+      <ul class="problem-list">
+        <li>8 agents for a simple support query</li>
+        <li>Slow — coordination adds latency</li>
+        <li>Expensive — many LLM calls per question</li>
+        <li>Hard to debug routing failures</li>
+      </ul>
+      <div class="teaching-line amber">
+        "This is overkill — we used multi-agent before the task actually demanded specialization or scale."
+      </div>
+    </div>
+
+    <!-- Optimal -->
+    <div class="arch-card optimal neutral arch-panel" id="panel-3">
+      <div class="arch-badge green">✓ Optimal</div>
+      <div class="arch-title" id="arch-title-3">Approach 3</div>
+      <div style="color:var(--muted); font-size:0.88rem; margin-bottom:1rem; line-height:1.6">Single agent with the right tools. Elegant and accurate.</div>
+
+      <div class="flow-diagram">
+        <div class="flow-row"><div class="flow-node customer">Customer Query</div><div class="flow-arrow">→</div><div class="flow-node process">Agent</div></div>
+        <div class="flow-arrow down">↓</div>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; justify-content:center; margin:0.3rem 0">
+          <div class="flow-node tool">Order API 📦</div>
+          <div class="flow-node tool">Policy Search 📋</div>
+          <div class="flow-node tool">Refund Check ✅</div>
+        </div>
+        <div class="flow-arrow down">↓</div>
+        <div class="flow-row" style="justify-content:center"><div class="flow-node output">Accurate Answer</div></div>
+      </div>
+
+      <div class="chat-bubble ai" style="margin-top:1rem">
+        <div class="chat-label">AI Output</div>
+        <span class="green-highlight">"Your order is out for delivery, expected today by 8 PM. If late, you can return it within 7 days — provided the item is unused and eligible under the return policy."</span>
+      </div>
+
+      <ul class="problem-list good">
+        <li>Calls real order API — accurate status</li>
+        <li>Retrieves correct return rules</li>
+        <li>One agent — fast and cheap</li>
+        <li>Tool calls are easily inspectable</li>
+      </ul>
+      <div class="teaching-line green">
+        "Single agent + tools. Matches the task perfectly — not too little, not too much."
+      </div>
+    </div>
+  </div>
+
+  <!-- Analyze Button -->
+  <div style="text-align: center; margin-top: 3rem; margin-bottom: 1rem;">
+    <button id="analyze-btn" class="btn-primary" onclick="analyzeApproaches()" style="font-size: 1rem; padding: 0.9rem 2.5rem; box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);">Analyze Approaches</button>
+  </div>
+
+
+
+</div>
+</section>
+</div> <!-- END tab-why -->
+
+<hr class="divider">
+
+<!-- TAB 2: DESIGN PATTERNS -->
+<div id="tab-patterns" class="tab-content">
+<!-- ─── PATTERNS ─────────────────────────────────────── -->
+<section id="patterns" style="background:var(--navy-mid); padding:6rem 2rem;">
+<div style="max-width:1100px; margin:0 auto;">
+
+  <div class="reveal">
+    <div class="section-eyebrow">The Five Patterns</div>
+    <h2 class="section-title">Agentic Design Patterns</h2>
+    <p class="section-desc">These patterns are not competitors. Real systems often combine them. A planning agent may use ReAct inside each step, and reflection may be added at the end for quality.</p>
+  </div>
+
+  <div class="patterns-nav reveal">
+    <button class="pat-tab active" onclick="showPat('sequential')">⛓ Sequential</button>
+    <button class="pat-tab" onclick="showPat('react')">🔄 ReAct</button>
+    <button class="pat-tab" onclick="showPat('planning')">🗺 Planning</button>
+    <button class="pat-tab" onclick="showPat('reflection')">🪞 Reflection</button>
+    <button class="pat-tab" onclick="showPat('multiagent')">🤝 Multi-Agent</button>
+  </div>
+
+  <!-- Sequential -->
+  <div class="pattern-panel active" id="pat-sequential">
+    <div class="pattern-layout">
+      <div class="pattern-info">
+        <div class="tagline">Pattern 01</div>
+        <h2>Sequential Chain</h2>
+        <p>Used when the steps are <strong style="color:var(--white)">fixed and known in advance</strong>. Each step feeds directly into the next in a predetermined, reliable order. The LLM may power one or two steps, but the overall structure is deterministic.</p>
+        <p style="font-size:0.9rem;"><strong style="color:var(--amber)">Example:</strong> A resume parser — Upload → Extract skills → Categorize → Store → Summary. Same steps, every time.</p>
+        <div class="use-when">
+          <div class="use-box yes-box">
+            <h4 class="yes">✓ Use when</h4>
+            <ul>
+              <li>Process is predictable</li>
+              <li>Same steps every time</li>
+              <li>Little decision-making needed</li>
+              <li>Deterministic pipeline</li>
+            </ul>
+          </div>
+          <div class="use-box no-box">
+            <h4 class="no">✗ Avoid when</h4>
+            <ul>
+              <li>Next step depends on unknown results</li>
+              <li>Agent needs to reason about tools</li>
+              <li>Workflow changes per user input</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="pattern-visual">
+        <div style="font-family:var(--font-mono); font-size:0.7rem; color:var(--muted); margin-bottom:1rem; text-align:center;">STEP 1 → STEP 2 → STEP 3 → OUTPUT</div>
+        <div class="anim-flow" id="anim-sequential">
+          <div class="anim-node n-input">📄 Upload Resume</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-think">🤖 Extract Skills (LLM)</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-act">🗂 Categorize Skills</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-obs">💾 Store in Database</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-out">📊 Show Summary</div>
+        </div>
+        <button class="run-btn" onclick="animateFlow('anim-sequential')">▶ Run Animation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ReAct -->
+  <div class="pattern-panel" id="pat-react">
+    <div class="pattern-layout">
+      <div class="pattern-info">
+        <div class="tagline">Pattern 02</div>
+        <h2>ReAct Pattern</h2>
+        <p><strong style="color:var(--white)">Reason → Act → Observe → Repeat.</strong> The agent thinks about what to do, uses a tool, observes the result, then decides the next step dynamically. Perfect when the path isn't fully known upfront.</p>
+        <p style="font-size:0.9rem;"><strong style="color:var(--amber)">Example:</strong> Our e-commerce agent — it reasons, calls Order API, observes the status, reasons again, calls Return Policy, then answers.</p>
+        <div class="use-when">
+          <div class="use-box yes-box">
+            <h4 class="yes">✓ Use when</h4>
+            <ul>
+              <li>Exact path is not known</li>
+              <li>Agent needs external tools</li>
+              <li>Each step depends on prior results</li>
+              <li>Dynamic, adaptive tasks</li>
+            </ul>
+          </div>
+          <div class="use-box no-box">
+            <h4 class="no">✗ Avoid when</h4>
+            <ul>
+              <li>Workflow is already fixed</li>
+              <li>Deterministic pipeline works fine</li>
+              <li>No external tools needed</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="pattern-visual">
+        <div style="font-family:var(--font-mono); font-size:0.7rem; color:var(--muted); margin-bottom:1rem; text-align:center;">REASON → ACT → OBSERVE → REPEAT</div>
+        <div class="anim-flow" id="anim-react">
+          <div class="anim-node n-input">❓ User Query</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-think">💭 Reason: "Need order status"</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-act">🔧 Act: Call Order API</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-obs">👁 Observe: Out for delivery</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-think">💭 Reason: "Need return policy"</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-act">🔧 Act: Call Policy Tool</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-out">✅ Final Answer</div>
+        </div>
+        <button class="run-btn" onclick="animateFlow('anim-react')">▶ Run Animation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Planning -->
+  <div class="pattern-panel" id="pat-planning">
+    <div class="pattern-layout">
+      <div class="pattern-info">
+        <div class="tagline">Pattern 03</div>
+        <h2>Planning Pattern</h2>
+        <p>For big tasks where the agent should <strong style="color:var(--white)">first create a roadmap, then execute</strong>. The agent decomposes the task, resolves dependencies upfront, and uses local reasoning per step.</p>
+        <p style="font-size:0.9rem;"><strong style="color:var(--amber)">Example:</strong> "Write a 5-page market research report on EVs." The agent first plans all 5 stages, then executes each one in order.</p>
+        <div class="use-when">
+          <div class="use-box yes-box">
+            <h4 class="yes">✓ Use when</h4>
+            <ul>
+              <li>Task has multiple stages</li>
+              <li>Structure can be identified upfront</li>
+              <li>Dependencies matter between steps</li>
+              <li>Complex, multi-part deliverables</li>
+            </ul>
+          </div>
+          <div class="use-box no-box">
+            <h4 class="no">✗ Avoid when</h4>
+            <ul>
+              <li>Task is very small/simple</li>
+              <li>Structure changes after every action</li>
+              <li>Plans become stale quickly</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="pattern-visual">
+        <div style="font-family:var(--font-mono); font-size:0.7rem; color:var(--muted); margin-bottom:1rem; text-align:center;">PLAN FIRST → EXECUTE STEPS</div>
+        <div class="anim-flow" id="anim-planning">
+          <div class="anim-node n-input">📝 "Write EV Market Research"</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-think">🗺 Create Plan (5 stages)</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-act">① Collect market size data</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-act">② Find top companies</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-act">③ Compare trends</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-act">④ Analyze challenges</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-out">📄 Final Report</div>
+        </div>
+        <button class="run-btn" onclick="animateFlow('anim-planning')">▶ Run Animation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reflection -->
+  <div class="pattern-panel" id="pat-reflection">
+    <div class="pattern-layout">
+      <div class="pattern-info">
+        <div class="tagline">Pattern 04</div>
+        <h2>Reflection Pattern</h2>
+        <p>The agent <strong style="color:var(--white)">generates an output, critiques it, then refines it</strong>. A second pass checks facts, structure, and completeness. Use when quality matters more than speed.</p>
+        <p style="font-size:0.9rem;"><strong style="color:var(--amber)">Example:</strong> AI writes a project report. A critique pass checks accuracy, structure, and missing points. The answer is then improved before delivery.</p>
+        <div class="use-when">
+          <div class="use-box yes-box">
+            <h4 class="yes">✓ Use when</h4>
+            <ul>
+              <li>Quality matters more than speed</li>
+              <li>Clear evaluation criteria exist</li>
+              <li>Mistakes are costly (legal, medical)</li>
+              <li>Output needs fact-checking</li>
+            </ul>
+          </div>
+          <div class="use-box no-box">
+            <h4 class="no">✗ Avoid when</h4>
+            <ul>
+              <li>Task is simple or quick</li>
+              <li>Fast response is critical</li>
+              <li>No clear quality criteria</li>
+              <li>Latency/cost is a concern</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="pattern-visual">
+        <div style="font-family:var(--font-mono); font-size:0.7rem; color:var(--muted); margin-bottom:1rem; text-align:center;">GENERATE → CRITIQUE → REFINE</div>
+        <div class="anim-flow" id="anim-reflection">
+          <div class="anim-node n-input">📝 Task: Write Report</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-act">✍ Generate Draft</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-think">🔍 Critique: Check facts?</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-think">🔍 Critique: Clear structure?</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-think">🔍 Critique: Missing points?</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-obs">✏ Refine Draft</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-out">⭐ Polished Output</div>
+        </div>
+        <button class="run-btn" onclick="animateFlow('anim-reflection')">▶ Run Animation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Multi-Agent -->
+  <div class="pattern-panel" id="pat-multiagent">
+    <div class="pattern-layout">
+      <div class="pattern-info">
+        <div class="tagline">Pattern 05</div>
+        <h2>Multi-Agent</h2>
+        <p>Multiple <strong style="color:var(--white)">specialized agents work in parallel</strong> under a coordinator. Use when the work is too large for one agent, needs different specializations, or benefits from parallel execution.</p>
+        <p style="font-size:0.9rem;"><strong style="color:var(--amber)">Example:</strong> Full software feature — Product, Coding, Testing, Security, and Review agents each handle their domain simultaneously.</p>
+        <div class="use-when">
+          <div class="use-box yes-box">
+            <h4 class="yes">✓ Use when</h4>
+            <ul>
+              <li>Task needs different specializations</li>
+              <li>Work is too large for one agent</li>
+              <li>Parallel work saves time</li>
+              <li>True scale is required</li>
+            </ul>
+          </div>
+          <div class="use-box no-box">
+            <h4 class="no">✗ Avoid when</h4>
+            <ul>
+              <li>One agent with tools can handle it</li>
+              <li>Coordination overhead > benefit</li>
+              <li>Debugging multi-agent is harder</li>
+              <li>Simple query / small scope</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="pattern-visual">
+        <div style="font-family:var(--font-mono); font-size:0.7rem; color:var(--muted); margin-bottom:1rem; text-align:center;">COORDINATOR → SPECIALISTS → MERGE</div>
+        <div class="anim-flow" id="anim-multiagent">
+          <div class="anim-node n-input">🏗 Build Software Feature</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-think">🎯 Coordinator Agent</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-tools-row">
+            <div class="anim-node n-tool">📋 Product Agent</div>
+            <div class="anim-node n-tool">💻 Coding Agent</div>
+            <div class="anim-node n-tool">🧪 Testing Agent</div>
+            <div class="anim-node n-tool">🔒 Security Agent</div>
+          </div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-obs">🔀 Merge Results</div>
+          <div class="anim-arrow"></div>
+          <div class="anim-node n-out">🚀 Deployed Feature</div>
+        </div>
+        <button class="run-btn" onclick="animateFlow('anim-multiagent')">▶ Run Animation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison Table -->
+  <div class="reveal" style="margin-top:3rem;">
+    <h3 style="font-family:var(--font-display); font-size:1.3rem; margin-bottom:1rem;">Quick Comparison</h3>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Pattern</th>
+          <th>Best When</th>
+          <th>Example</th>
+          <th>Watch Out For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>⛓ Sequential Chain</td>
+          <td>Steps are fixed</td>
+          <td>Resume parsing pipeline</td>
+          <td>Too rigid for dynamic tasks</td>
+        </tr>
+        <tr>
+          <td>🔄 ReAct</td>
+          <td>Agent must reason + act with tools</td>
+          <td>E-commerce support query</td>
+          <td>Can loop if goal is unclear</td>
+        </tr>
+        <tr>
+          <td>🗺 Planning</td>
+          <td>Big task needs a roadmap first</td>
+          <td>Market research report</td>
+          <td>Plans may go stale mid-execution</td>
+        </tr>
+        <tr>
+          <td>🪞 Reflection</td>
+          <td>Output quality must be improved</td>
+          <td>Legal / report review</td>
+          <td>Adds latency and cost</td>
+        </tr>
+        <tr>
+          <td>🤝 Multi-Agent</td>
+          <td>Needs specialization or scale</td>
+          <td>Full software project</td>
+          <td>Coordination complexity</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</section>
+</div> <!-- END tab-patterns -->
+
+<hr class="divider">
+
+<!-- TAB 3: DECISION TREE -->
+<div id="tab-decision" class="tab-content">
+<!-- ─── DECISION TREE ─────────────────────────────────── -->
+<section id="decision" style="background:var(--navy); padding:6rem 2rem;">
+<div style="max-width:1100px; margin:0 auto;">
+
+  <div class="reveal">
+    <div class="section-eyebrow">Framework</div>
+    <h2 class="section-title">The Decision Tree</h2>
+    <p class="section-desc">Walk through these questions for any AI task and arrive at the right design pattern every time. The principle: <strong style="color:var(--cyan)">choose the simplest pattern that fits the task.</strong></p>
+  </div>
+
+  <div class="tree-container reveal">
+    <svg id="tree-svg" viewBox="0 0 900 780" xmlns="http://www.w3.org/2000/svg" style="min-width:600px;">
+      <defs>
+        <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="rgba(136,153,170,0.6)" />
+        </marker>
+        <filter id="glow-filter">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- Connections -->
+      <!-- Start -> Q1 -->
+      <line x1="450" y1="58" x2="450" y2="108" stroke="rgba(136,153,170,0.4)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+      <!-- Q1 Yes -> Q2 -->
+      <line x1="320" y1="143" x2="200" y2="200" stroke="rgba(16,185,129,0.5)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+      <!-- Q2 Yes -> Sequential -->
+      <line x1="140" y1="237" x2="110" y2="295" stroke="rgba(16,185,129,0.5)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+      <!-- Q2 No -> Q3 (task struct) -->
+      <line x1="260" y1="237" x2="380" y2="340" stroke="rgba(239,68,68,0.5)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+      <!-- Q1 No -> Tool? -->
+      <line x1="580" y1="143" x2="720" y2="200" stroke="rgba(239,68,68,0.5)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+      <!-- Tool No -> No external data note -->
+      <line x1="780" y1="237" x2="820" y2="295" stroke="rgba(239,68,68,0.5)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+      <!-- Tool Yes -> Q3 -->
+      <line x1="660" y1="237" x2="520" y2="340" stroke="rgba(16,185,129,0.5)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+      <!-- Q3 Yes -> Planning -->
+      <line x1="390" y1="378" x2="300" y2="430" stroke="rgba(16,185,129,0.5)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+      <!-- Q3 No -> ReAct -->
+      <line x1="510" y1="378" x2="620" y2="430" stroke="rgba(239,68,68,0.5)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+      <!-- Q4 Yes -> Reflection -->
+      <line x1="390" y1="518" x2="290" y2="570" stroke="rgba(16,185,129,0.5)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+      <!-- Q4 No -> Skip Reflection -->
+      <line x1="510" y1="518" x2="610" y2="570" stroke="rgba(239,68,68,0.5)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+      <!-- Both paths -> Q5 -->
+      <line x1="290" y1="605" x2="390" y2="650" stroke="rgba(136,153,170,0.4)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+      <line x1="660" y1="605" x2="560" y2="650" stroke="rgba(136,153,170,0.4)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+      <!-- Q5 Yes -> Multi-Agent -->
+      <line x1="400" y1="688" x2="300" y2="740" stroke="rgba(16,185,129,0.5)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+      <!-- Q5 No -> Single Agent -->
+      <line x1="540" y1="688" x2="640" y2="740" stroke="rgba(239,68,68,0.5)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+      <!-- Q4 from Planning -->
+      <line x1="300" y1="467" x2="380" y2="500" stroke="rgba(136,153,170,0.4)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+      <line x1="670" y1="467" x2="570" y2="500" stroke="rgba(136,153,170,0.4)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+      <!-- Labels on edges -->
+      <text x="248" y="168" fill="#10B981" font-size="10" font-family="JetBrains Mono, monospace" opacity="0.9">Yes</text>
+      <text x="545" y="168" fill="#EF4444" font-size="10" font-family="JetBrains Mono, monospace" opacity="0.9">No</text>
+      <text x="112" y="268" fill="#10B981" font-size="10" font-family="JetBrains Mono, monospace" opacity="0.9">Yes</text>
+      <text x="245" y="268" fill="#EF4444" font-size="10" font-family="JetBrains Mono, monospace" opacity="0.9">No</text>
+      <text x="665" y="268" fill="#EF4444" font-size="10" font-family="JetBrains Mono, monospace" opacity="0.9">No</text>
+      <text x="713" y="268" fill="#10B981" font-size="10" font-family="JetBrains Mono, monospace" opacity="0.9">Yes</text>
+      <text x="323" y="408" fill="#10B981" font-size="10" font-family="JetBrains Mono, monospace" opacity="0.9">Yes</text>
+      <text x="548" y="408" fill="#EF4444" font-size="10" font-family="JetBrains Mono, monospace" opacity="0.9">No</text>
+      <text x="308" y="548" fill="#10B981" font-size="10" font-family="JetBrains Mono, monospace" opacity="0.9">Yes</text>
+      <text x="545" y="548" fill="#EF4444" font-size="10" font-family="JetBrains Mono, monospace" opacity="0.9">No</text>
+      <text x="345" y="668" fill="#10B981" font-size="10" font-family="JetBrains Mono, monospace" opacity="0.9">Yes</text>
+      <text x="570" y="668" fill="#EF4444" font-size="10" font-family="JetBrains Mono, monospace" opacity="0.9">No</text>
+
+      <!-- START node -->
+      <rect x="330" y="20" width="240" height="38" rx="19" fill="rgba(0,212,255,0.15)" stroke="#00D4FF" stroke-width="1.5"/>
+      <text x="450" y="44" text-anchor="middle" fill="#00D4FF" font-size="13" font-family="Space Grotesk, sans-serif" font-weight="700">Start: Understand task properties</text>
+
+      <!-- Q1 diamond: Solution path known? -->
+      <polygon points="450,108 560,143 450,178 340,143" fill="rgba(124,58,237,0.15)" stroke="#7C3AED" stroke-width="1.5"/>
+      <text x="450" y="137" text-anchor="middle" fill="#A78BFA" font-size="10" font-family="Space Grotesk, sans-serif" font-weight="600">Is solution path</text>
+      <text x="450" y="152" text-anchor="middle" fill="#A78BFA" font-size="10" font-family="Space Grotesk, sans-serif" font-weight="600">known in advance?</text>
+
+      <!-- Q2 diamond: Fixed workflow? -->
+      <polygon points="200,200 300,237 200,274 100,237" fill="rgba(124,58,237,0.15)" stroke="#7C3AED" stroke-width="1.5"/>
+      <text x="200" y="231" text-anchor="middle" fill="#A78BFA" font-size="9.5" font-family="Space Grotesk, sans-serif" font-weight="600">Is this a fixed</text>
+      <text x="200" y="246" text-anchor="middle" fill="#A78BFA" font-size="9.5" font-family="Space Grotesk, sans-serif" font-weight="600">workflow?</text>
+
+      <!-- Sequential Result -->
+      <rect x="40" y="295" width="140" height="58" rx="10" fill="rgba(16,185,129,0.12)" stroke="#10B981" stroke-width="1.5"/>
+      <text x="110" y="318" text-anchor="middle" fill="#10B981" font-size="11" font-family="Space Grotesk, sans-serif" font-weight="700">⛓ Sequential</text>
+      <text x="110" y="332" text-anchor="middle" fill="#6EE7B7" font-size="9" font-family="Inter, sans-serif">Structured Workflow</text>
+      <text x="110" y="345" text-anchor="middle" fill="#6EE7B7" font-size="8.5" font-family="Inter, sans-serif">Step-by-step execution</text>
+
+      <!-- Q Tool diamond -->
+      <polygon points="720,200 810,237 720,274 630,237" fill="rgba(124,58,237,0.15)" stroke="#7C3AED" stroke-width="1.5"/>
+      <text x="720" y="231" text-anchor="middle" fill="#A78BFA" font-size="9.5" font-family="Space Grotesk, sans-serif" font-weight="600">Requires tools or</text>
+      <text x="720" y="246" text-anchor="middle" fill="#A78BFA" font-size="9.5" font-family="Space Grotesk, sans-serif" font-weight="600">external data?</text>
+
+      <!-- Add Tool Use result -->
+      <rect x="770" y="295" width="120" height="48" rx="10" fill="rgba(0,212,255,0.1)" stroke="#00D4FF" stroke-width="1.5"/>
+      <text x="830" y="315" text-anchor="middle" fill="#00D4FF" font-size="10" font-family="Space Grotesk, sans-serif" font-weight="700">🔧 Add Tool Use</text>
+      <text x="830" y="330" text-anchor="middle" fill="rgba(0,212,255,0.7)" font-size="8.5" font-family="Inter, sans-serif">Enhances capability</text>
+      <text x="830" y="342" text-anchor="middle" fill="rgba(0,212,255,0.7)" font-size="8.5" font-family="Inter, sans-serif">(no change to pattern)</text>
+
+      <!-- Q3 diamond: Task structure articulable? -->
+      <polygon points="450,340 560,378 450,416 340,378" fill="rgba(124,58,237,0.15)" stroke="#7C3AED" stroke-width="1.5"/>
+      <text x="450" y="372" text-anchor="middle" fill="#A78BFA" font-size="9.5" font-family="Space Grotesk, sans-serif" font-weight="600">Is task structure articulable</text>
+      <text x="450" y="386" text-anchor="middle" fill="#A78BFA" font-size="9.5" font-family="Space Grotesk, sans-serif" font-weight="600">before execution?</text>
+
+      <!-- Planning result -->
+      <rect x="220" y="430" width="140" height="58" rx="10" fill="rgba(245,158,11,0.12)" stroke="#F59E0B" stroke-width="1.5"/>
+      <text x="290" y="453" text-anchor="middle" fill="#F59E0B" font-size="11" font-family="Space Grotesk, sans-serif" font-weight="700">🗺 Planning</text>
+      <text x="290" y="467" text-anchor="middle" fill="#FCD34D" font-size="9" font-family="Inter, sans-serif">Decompose into steps</text>
+      <text x="290" y="480" text-anchor="middle" fill="#FCD34D" font-size="8.5" font-family="Inter, sans-serif">Resolve dependencies early</text>
+
+      <!-- ReAct result -->
+      <rect x="550" y="430" width="140" height="58" rx="10" fill="rgba(0,212,255,0.1)" stroke="#00D4FF" stroke-width="1.5"/>
+      <text x="620" y="453" text-anchor="middle" fill="#00D4FF" font-size="11" font-family="Space Grotesk, sans-serif" font-weight="700">🔄 ReAct</text>
+      <text x="620" y="467" text-anchor="middle" fill="rgba(0,212,255,0.8)" font-size="9" font-family="Inter, sans-serif">Iterative reasoning + actions</text>
+      <text x="620" y="480" text-anchor="middle" fill="rgba(0,212,255,0.8)" font-size="8.5" font-family="Inter, sans-serif">Adapts dynamically</text>
+
+      <!-- Q4 diamond: Quality over speed? -->
+      <polygon points="450,500 560,538 450,576 340,538" fill="rgba(124,58,237,0.15)" stroke="#7C3AED" stroke-width="1.5"/>
+      <text x="450" y="532" text-anchor="middle" fill="#A78BFA" font-size="9.5" font-family="Space Grotesk, sans-serif" font-weight="600">Does output quality</text>
+      <text x="450" y="546" text-anchor="middle" fill="#A78BFA" font-size="9.5" font-family="Space Grotesk, sans-serif" font-weight="600">matter more than speed?</text>
+
+      <!-- Add Reflection result -->
+      <rect x="220" y="570" width="140" height="48" rx="10" fill="rgba(124,58,237,0.12)" stroke="#7C3AED" stroke-width="1.5"/>
+      <text x="290" y="590" text-anchor="middle" fill="#A78BFA" font-size="11" font-family="Space Grotesk, sans-serif" font-weight="700">🪞 Reflection</text>
+      <text x="290" y="604" text-anchor="middle" fill="#C4B5FD" font-size="9" font-family="Inter, sans-serif">Generate → Critique → Refine</text>
+
+      <!-- Skip Reflection result -->
+      <rect x="580" y="570" width="140" height="48" rx="10" fill="rgba(136,153,170,0.08)" stroke="rgba(136,153,170,0.3)" stroke-width="1.5"/>
+      <text x="650" y="590" text-anchor="middle" fill="var(--muted)" font-size="11" font-family="Space Grotesk, sans-serif" font-weight="700">⏭ Skip Reflection</text>
+      <text x="650" y="604" text-anchor="middle" fill="rgba(136,153,170,0.7)" font-size="9" font-family="Inter, sans-serif">Prioritize response speed</text>
+
+      <!-- Q5 diamond: Specialization / scale? -->
+      <polygon points="470,650 580,688 470,726 360,688" fill="rgba(124,58,237,0.15)" stroke="#7C3AED" stroke-width="1.5"/>
+      <text x="470" y="682" text-anchor="middle" fill="#A78BFA" font-size="9.5" font-family="Space Grotesk, sans-serif" font-weight="600">Does task require</text>
+      <text x="470" y="696" text-anchor="middle" fill="#A78BFA" font-size="9.5" font-family="Space Grotesk, sans-serif" font-weight="600">specialization or scale?</text>
+
+      <!-- Multi-Agent result -->
+      <rect x="200" y="740" width="140" height="38" rx="10" fill="rgba(245,158,11,0.12)" stroke="#F59E0B" stroke-width="1.5"/>
+      <text x="270" y="756" text-anchor="middle" fill="#F59E0B" font-size="11" font-family="Space Grotesk, sans-serif" font-weight="700">🤝 Multi-Agent</text>
+      <text x="270" y="770" text-anchor="middle" fill="#FCD34D" font-size="9" font-family="Inter, sans-serif">Specialized + parallel</text>
+
+      <!-- Single Agent result -->
+      <rect x="590" y="740" width="140" height="38" rx="10" fill="rgba(16,185,129,0.12)" stroke="#10B981" stroke-width="1.5"/>
+      <text x="660" y="756" text-anchor="middle" fill="#10B981" font-size="11" font-family="Space Grotesk, sans-serif" font-weight="700">🤖 Single Agent</text>
+      <text x="660" y="770" text-anchor="middle" fill="#6EE7B7" font-size="9" font-family="Inter, sans-serif">Simple and efficient</text>
+    </svg>
+
+    <div class="tree-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#7C3AED;"></div> Decision Point</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#10B981;"></div> Yes path</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#EF4444;"></div> No path</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#00D4FF;"></div> Result: Add Tool</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#F59E0B;"></div> Result: Pattern</div>
+    </div>
+  </div>
+
+  <!-- Interactive Simulator -->
+  <div class="tree-sim reveal">
+    <h3>🧭 Walk the Tree — Interactive Simulator</h3>
+    <div id="sim-container"></div>
+    <div class="sim-result" id="sim-result">
+      <h4 id="sim-result-title">Recommended Pattern</h4>
+      <p id="sim-result-body"></p>
+    </div>
+    <button class="sim-reset" onclick="resetSim()">↺ Start over</button>
+  </div>
+
+</div>
+</section>
+</div> <!-- END tab-decision -->
+
+<footer>
+  <div style="font-family:var(--font-display); font-weight:700; font-size:1rem; margin-bottom:0.5rem; background:linear-gradient(135deg,var(--cyan),var(--violet)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Agentic Design Patterns</div>
+  Choose the simplest pattern that fits the task.
+</footer>
+
+<script>
+// ─── CANVAS BACKGROUND ───────────────────────────────
+const canvas = document.getElementById('canvas-bg');
+const ctx = canvas.getContext('2d');
+let W, H, nodes = [], animFrame;
+
+function resize() {
+  W = canvas.width = canvas.offsetWidth;
+  H = canvas.height = canvas.offsetHeight;
+}
+
+function initNodes() {
+  nodes = Array.from({length: 48}, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    vx: (Math.random() - 0.5) * 0.35,
+    vy: (Math.random() - 0.5) * 0.35,
+    r: Math.random() * 2.5 + 1
+  }));
+}
+
+function drawCanvas() {
+  ctx.clearRect(0, 0, W, H);
+  nodes.forEach(n => {
+    n.x += n.vx; n.y += n.vy;
+    if (n.x < 0 || n.x > W) n.vx *= -1;
+    if (n.y < 0 || n.y > H) n.vy *= -1;
+  });
+  // edges
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const dx = nodes[i].x - nodes[j].x;
+      const dy = nodes[i].y - nodes[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 130) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(0,212,255,${0.12 * (1 - dist/130)})`;
+        ctx.lineWidth = 0.8;
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+  // dots
+  nodes.forEach(n => {
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,212,255,0.45)';
+    ctx.fill();
+  });
+  animFrame = requestAnimationFrame(drawCanvas);
+}
+
+window.addEventListener('resize', () => { resize(); initNodes(); });
+resize(); initNodes(); drawCanvas();
+
+// ─── ANALYZE APPROACHES LOGIC ───────────────────────
+function analyzeApproaches() {
+  const cards = document.querySelectorAll('.arch-card');
+  cards.forEach(c => {
+    c.classList.remove('neutral');
+  });
+
+  // Update card titles with classifications
+  document.getElementById('arch-title-1').innerHTML = 'Approach 1 <span style="font-size:0.85rem; font-weight:500; color:#EF4444; opacity:0.85; margin-left:0.5rem;">(Underkill)</span>';
+  document.getElementById('arch-title-2').innerHTML = 'Approach 2 <span style="font-size:0.85rem; font-weight:500; color:var(--amber); opacity:0.85; margin-left:0.5rem;">(Overkill)</span>';
+  document.getElementById('arch-title-3').innerHTML = 'Approach 3 <span style="font-size:0.85rem; font-weight:500; color:var(--green); opacity:0.85; margin-left:0.5rem;">(Optimal)</span>';
+
+  // Hide the analyze button
+  const btn = document.getElementById('analyze-btn');
+  if (btn) {
+    btn.style.display = 'none';
+  }
+}
+
+// ─── SELECT APPROACH LOGIC ──────────────────────────
+function selectApproach(num) {
+  // Toggle button active state
+  const btn = document.getElementById('btn-approach-' + num);
+  if (btn) {
+    btn.classList.toggle('active');
+  }
+
+  // Toggle panel active state
+  const panel = document.getElementById('panel-' + num);
+  if (panel) {
+    panel.classList.toggle('active');
+  }
+}
+
+// ─── TAB SWITCHING LOGIC ────────────────────────────
+function switchTab(tabId) {
+  // Hide all tab contents
+  document.querySelectorAll('.tab-content').forEach(el => {
+    el.classList.remove('active-tab');
+  });
+  
+  // Show target tab content
+  const targetTab = document.getElementById('tab-' + tabId);
+  if (targetTab) {
+    targetTab.classList.add('active-tab');
+  }
+  
+  // Update nav links active class
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.classList.remove('active');
+  });
+  const activeLink = document.getElementById('nav-' + tabId);
+  if (activeLink) {
+    activeLink.classList.add('active');
+  }
+  
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Handle canvas animation performance
+  if (tabId === 'home') {
+    if (!animFrame) {
+      drawCanvas();
+    }
+  } else {
+    if (animFrame) {
+      cancelAnimationFrame(animFrame);
+      animFrame = null;
+    }
+  }
+
+  // Ensure reveal elements in the newly active tab get shown properly
+  setTimeout(() => {
+    if (targetTab) {
+      const visibleReveals = targetTab.querySelectorAll('.reveal');
+      visibleReveals.forEach(el => {
+        el.classList.add('visible');
+      });
+    }
+  }, 100);
+}
+
+// ─── REVEAL ON SCROLL ───────────────────────────────
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+revealEls.forEach(el => observer.observe(el));
+
+// ─── PATTERNS TABS ─────────────────────────────────
+function showPat(id) {
+  document.querySelectorAll('.pattern-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.pat-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('pat-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  setTimeout(() => animateFlow('anim-' + id), 200);
+}
+
+// ─── FLOW ANIMATIONS ───────────────────────────────
+function animateFlow(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const nodes = container.querySelectorAll('.anim-node, .anim-arrow');
+  nodes.forEach(n => { n.classList.remove('show', 'glow'); });
+  let delay = 0;
+  nodes.forEach((n, i) => {
+    setTimeout(() => {
+      n.classList.add('show');
+      if (n.classList.contains('anim-node')) {
+        n.classList.add('glow');
+        setTimeout(() => n.classList.remove('glow'), 600);
+      }
+    }, delay);
+    delay += n.classList.contains('anim-arrow') ? 120 : 280;
+  });
+}
+
+// Animate first panel on load
+setTimeout(() => animateFlow('anim-sequential'), 800);
+
+
+
+// ─── DECISION TREE SIMULATOR ──────────────────────
+const simFlow = [
+  {
+    q: "Is the solution path known in advance?",
+    yes: 1, no: 2
+  },
+  {
+    q: "Is this a fixed, deterministic workflow?",
+    yes: 'sequential', no: 3
+  },
+  {
+    q: "Does the task require tools or external data?",
+    yes: 3, no: 'raw-llm'
+  },
+  {
+    q: "Is the task structure articulable before execution?",
+    yes: 4, no: 5
+  },
+  {
+    q: "Does output quality matter more than speed?",
+    yes: 6, no: 5
+  },
+  {
+    q: "Does the task require specialization or scale?",
+    yes: 'multi-agent', no: 'single-react'
+  },
+  {
+    q: "Does the task require specialization or scale?",
+    yes: 'multi-agent-reflect', no: 'single-reflect'
+  }
+];
+
+const simResults = {
+  'sequential': { title: '⛓ Sequential Chain', body: 'The task is structured and follows a fixed path. Use a deterministic pipeline where each step is predefined. The LLM may power one or two steps, but the overall workflow is predictable.' },
+  'raw-llm': { title: '🤖 Plain LLM (No Tools Needed)', body: 'If the path is unknown but no external data is required, a plain LLM call or ReAct without tool use may suffice. Keep it simple!' },
+  'single-react': { title: '🔄 ReAct — Single Agent with Tools', body: 'The task is dynamic and needs tools, but doesn\'t need a complex plan or multiple agents. A single ReAct agent that reasons and acts iteratively is the perfect fit. This is the optimal choice for the e-commerce example!' },
+  'multi-agent': { title: '🤝 Multi-Agent Architecture', body: 'The task demands specialization, scale, or parallel work. Use a coordinator agent with multiple specialized sub-agents. Worth the coordination complexity at this scale.' },
+  'single-reflect': { title: '🔄 + 🪞 ReAct with Reflection', body: 'The task is dynamic and quality matters, but doesn\'t need multiple agents. A single ReAct agent followed by a reflection/self-critique pass will improve output quality.' },
+  'multi-agent-reflect': { title: '🤝 + 🪞 Multi-Agent with Reflection', body: 'The task is large, specialized, AND quality-critical. Use a multi-agent architecture with a final reflection or review agent at the end for quality assurance.' }
+};
+
+let simState = 0;
+let simHistory = [];
+
+function renderSim() {
+  const container = document.getElementById('sim-container');
+  const resultEl = document.getElementById('sim-result');
+  resultEl.classList.remove('show');
+  container.innerHTML = '';
+
+  simHistory.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'sim-question';
+    div.innerHTML = `<div class="sim-q-text" style="color:var(--muted); font-size:0.88rem;">${item.q}</div>
+      <div class="sim-choices"><span class="sim-choice selected">${item.answer}</span></div>`;
+    container.appendChild(div);
+  });
+
+  const node = simFlow[simState];
+  if (!node) return;
+
+  const div = document.createElement('div');
+  div.className = 'sim-question';
+  div.style.animation = 'fadeUp 0.35s ease';
+  div.innerHTML = `<div class="sim-q-text"><strong>Q${simHistory.length + 1}:</strong> ${node.q}</div>
+    <div class="sim-choices">
+      <button class="sim-choice" onclick="simAnswer('yes')">Yes</button>
+      <button class="sim-choice" onclick="simAnswer('no')">No</button>
+    </div>`;
+  container.appendChild(div);
+}
+
+function simAnswer(choice) {
+  const node = simFlow[simState];
+  simHistory.push({ q: node.q, answer: choice === 'yes' ? 'Yes' : 'No' });
+  const next = choice === 'yes' ? node.yes : node.no;
+
+  if (typeof next === 'string') {
+    // result
+    const r = simResults[next];
+    const container = document.getElementById('sim-container');
+    container.innerHTML = '';
+    simHistory.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'sim-question';
+      div.innerHTML = `<div class="sim-q-text" style="color:var(--muted); font-size:0.88rem;">${item.q}</div>
+        <div class="sim-choices"><span class="sim-choice selected">${item.answer}</span></div>`;
+      container.appendChild(div);
+    });
+    const resultEl = document.getElementById('sim-result');
+    document.getElementById('sim-result-title').textContent = r.title;
+    document.getElementById('sim-result-body').textContent = r.body;
+    resultEl.classList.add('show');
+  } else {
+    simState = next;
+    renderSim();
+  }
+}
+
+function resetSim() {
+  simState = 0;
+  simHistory = [];
+  document.getElementById('sim-result').classList.remove('show');
+  renderSim();
+}
+
+renderSim();
+</script>
+</body>
+</html>
