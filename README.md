@@ -4,16 +4,16 @@ An interactive, visually rich, and responsive educational web application design
 
 🔗 **Live Repository:** [github.com/Sujit224/AgenticDesignPatterns](https://github.com/Sujit224/AgenticDesignPatterns)
 
-📖 **Reference Blog:** [Choosing the Right Agentic Design Pattern: A Decision Tree Approach](https://machinelearningmastery.com/choosing-the-right-agentic-design-pattern-a-decision-tree-approach/)
+ **Reference Blog:** [Choosing the Right Agentic Design Pattern: A Decision Tree Approach](https://machinelearningmastery.com/choosing-the-right-agentic-design-pattern-a-decision-tree-approach/)
 
 ---
 
-## 🎯 The Philosophy: "Choose the simplest pattern that fits"
+##  The Philosophy: "Choose the simplest pattern that fits"
 Building agentic systems shouldn't rely on guesswork. Every architectural decision should be deliberate. This project visualizes, animates, and guides you through matching the complexity of your task with the complexity of your agentic framework.
 
 ---
 
-## 🗺️ Visual Walkthrough & Features
+##  Visual Walkthrough & Features
 
 ### 1. Interactive Session Agenda
 A complete outline highlighting the session flow:
@@ -40,14 +40,6 @@ Interactive animations demonstrating data flow, use-cases, and anti-patterns for
 * **Interactive SVG Tree:** A visual decision tree flow chart tracing how properties of a task lead to specific design patterns.
 * **Interactive Simulator:** Answer a series of questions about your AI task to get a custom design pattern recommendation instantly.
 
----
-
-## 🛠️ Architecture & Tech Stack
-
-This project is built using a lightweight, high-performance, single-page application framework to guarantee instant loads, fluid CSS canvas particle animations, and interactive SVG diagrams:
-* **Core:** Semantic HTML5 & Vanilla Javascript ES6.
-* **Styling:** Custom CSS featuring glassmorphism, responsive grid systems, and keyframe animations.
-* **Graphics:** Native `<canvas>` API for background particle networks, and inline vector `<svg>` for the interactive Decision Tree.
 
 ---
 
@@ -69,5 +61,3 @@ Since it is a pure client-side SPA, you can open it directly in any modern brows
 
 ---
 
-## 🤝 Contribution & Feedback
-Feel free to open issues or pull requests to add new patterns, improve simulators, or enhance animations!
