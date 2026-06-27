@@ -4,6 +4,8 @@ An interactive, visually rich, and responsive educational web application design
 
 🔗 **Live Repository:** [github.com/Sujit224/AgenticDesignPatterns](https://github.com/Sujit224/AgenticDesignPatterns)
 
+📖 **Reference Blog:** [Choosing the Right Agentic Design Pattern: A Decision Tree Approach](https://machinelearningmastery.com/choosing-the-right-agentic-design-pattern-a-decision-tree-approach/)
+
 ---
 
 ## 🎯 The Philosophy: "Choose the simplest pattern that fits"
